@@ -5,7 +5,7 @@ namespace BingNewsSearch\Structs;
 use BingNewsSearch\Enum;
 use DateTime;
 
-class News 
+class News
 {
     private string $name;
     private string $description;
@@ -18,8 +18,6 @@ class News
 
     public function __construct(array $data)
     {
-        dump($data);
-        die;
         $this->name = $data['name'] ?? '';
         $this->description = $data['description'] ?? '';
         $this->url = $data['url'] ?? '';
