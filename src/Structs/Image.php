@@ -4,31 +4,32 @@ namespace BingNewsSearch\Structs;
 
 class Image
 {
-    private ?ImageThumbnail $thumbnail = null;
-    private ?string $url = null;
-    private array $providers = [];
 
-    public function __construct(array $data)
+    public function __construct(
+        private ImageThumbnail|array|null $thumbnail = null,
+        private ?string         $url = null,
+        private array           $providers = [],
+
+    )
     {
-        $this->thumbnail = isset($data['thumbnail']) ? new ImageThumbnail($data['thumbnail']) : null;
-        $this->url = $data['url'] ?? null;
-        if (isset($data['provider'])) foreach ($data['provider'] as $_provider) {
-            $this->providers[] = new Provider($_provider);
+        if (is_array($thumbnail)) {
+            $this->thumbnail = new ImageThumbnail(...$thumbnail);
         }
     }
 
-    public function thumbnail(): ?ImageThumbnail
+    public function getThumbnail(): ?ImageThumbnail
     {
         return $this->thumbnail;
     }
 
-    public function url(): ?string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    public function providers(): array
+    public function getProviders(): array
     {
         return $this->providers;
     }
+
 }

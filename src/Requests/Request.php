@@ -4,6 +4,7 @@ namespace BingNewsSearch\Requests;
 
 use BingNewsSearch\Enum;
 use BingNewsSearch\Client;
+use BingNewsSearch\Structs\NewsAnswer;
 use GuzzleHttp\Psr7;
 
 abstract class Request implements \JsonSerializable
@@ -23,7 +24,7 @@ abstract class Request implements \JsonSerializable
     abstract public function onBeforeRequest(): ?\Exception;
 
     public function __construct(Client $client, ...$args)
-    {   
+    {
         $this->_client = $client;
         if (method_exists($this, "initialize")) call_user_func_array([$this, "initialize"], $args);
     }
@@ -43,6 +44,11 @@ abstract class Request implements \JsonSerializable
     {
         $this->requestResponse = $requestResponse;
         $response = json_decode($requestResponse->getBody()->getContents(), true);
+
+        dd($response);
+        $newsAnswer = new NewsAnswer(...$data);
+
+        dd($response);
         $this->status = ($requestResponse->getStatusCode() === 200);
         $this->webUrl = $response['webSearchUrl'] ?? '';
         $this->message = $requestResponse->getReasonPhrase() ?? '';

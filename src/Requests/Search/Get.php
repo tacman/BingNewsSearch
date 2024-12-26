@@ -15,12 +15,16 @@ class Get extends Requests\Request
     private Enum\SafeSearch $safeSearch;
     private Enum\SortBy $sortBy;
     private string $quantity;
+    private string $language;
     private ?DateTime $since = null;
     private array $news = [];
 
-    public function initialize(string $query = '')
+    public function initialize(string $query = '', string $language = 'en')
     {
         $this->q = $query;
+        $this->language = $language;
+        $this->safeSearch = Enum\SafeSearch::OFF();
+        $this->sortBy = Enum\SortBy::DATE();
     }
 
     public function onBeforeRequest(): ?\Exception
@@ -29,7 +33,7 @@ class Get extends Requests\Request
         if ($this->since && (!$this->sortBy || !$this->sortBy->isDate())) return new DomainException("Since only available with Date sort.");
         return null;
     }
-    
+
     public function setSafeSearch(Enum\SafeSearch $data): self
     {
         $this->safeSearch = $data;
@@ -118,7 +122,7 @@ class Get extends Requests\Request
         return $this->since;
     }
 
-    
+
     public function getNews(): array
     {
         return $this->news;

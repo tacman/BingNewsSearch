@@ -2,31 +2,32 @@
 
 namespace BingNewsSearch\Structs;
 
-class ImageThumbnail 
+class ImageThumbnail
 {
-    private string $contentUrl;
-    private ?int $width;
-    private ?int $height;
 
-    public function __construct(array $data)
+    public function __construct(
+        private string $contentUrl,
+        private ?int   $width,
+        private ?int   $height,
+
+    )
     {
-        $this->contentUrl = $data['contentUrl'] ?? '';
-        $this->width = $data['width'] ?? null;
-        $this->height = $data['height'] ?? null;
     }
 
-    public function contentUrl(): string
+    public function getContentUrl(): string
     {
         return $this->contentUrl;
     }
 
-    public function width(): ?int
+    public function getWidth(): ?int
     {
         return $this->width;
     }
 
-    public function height(): ?int
+    public function getHeight(): ?int
     {
         return $this->height;
-    }  
+    }
+
+
 }

@@ -1,42 +1,61 @@
 <?php
 namespace BingNewsSearch;
 
+use BingNewsSearch\Structs\NewsAnswer;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
 use BingNewsSearch\Exceptions;
 use BingNewsSearch\Requests;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class Client
 {
     private GuzzleClient $_client;
-    private string $endpoint;
-    private string $token;
-    private string $version;
     private bool $verifySsl = true;
     private bool $enableExceptions = false;
 
-    public function __construct(string $endpoint, string $token, string $version = 'v7.0')
+    public function __construct(
+        private string $endpoint,
+        private string $token,
+        private string $version = 'v7.0',
+       private ?CacheInterface $cache = null)
     {
-        $this->endpoint = $endpoint;
-        $this->token = $token;
-        $this->version = $version;
     }
 
-    public function request(Requests\Request $request)
+    public function request(Requests\Request $request): NewsAnswer
     {
         if (empty($this->_client)) $this->_client = new GuzzleClient(['verify' => $this->verifySsl]);
 
-        try {
             $exception = $request->onBeforeRequest();
             if ($exception) {
                 $request->setError($exception);
                 if ($this->enableExceptions) throw $exception;
             }
-            $response = $this->_client->request((string)$request->getMethod(), $this->getUrl($request->getPath()), [
-                RequestOptions::QUERY => $request->getQuery(),
-                RequestOptions::FORM_PARAMS => $request->getFormData(),
-                RequestOptions::HEADERS => [ 'Ocp-Apim-Subscription-Key' => $this->token ],
-            ]);
+
+            $key = hash('xxh3', 'xxx' . json_encode($request->toArray()));
+//            dd($request->toArray(), $request->getQuery());
+            $data = $this->cache->get($key, function (CacheItem $item) use ($request) {
+                $item->expiresAfter(3600);
+                $response = $this->_client->request((string)$request->getMethod(), $this->getUrl($request->getPath()), [
+                    RequestOptions::QUERY => $request->getQuery(),
+                    RequestOptions::FORM_PARAMS => $request->getFormData(),
+                    RequestOptions::HEADERS => [ 'Ocp-Apim-Subscription-Key' => $this->token ],
+                ]);
+
+                $statusCode = $response->getStatusCode();
+                if ($statusCode < 200 || $statusCode > 299) {
+                    //
+                }
+                $content = $response->getBody()->getContents();
+                $response = json_decode($content, true);
+                $returnValue =  match($response['_type']) {
+                    'News' => new NewsAnswer(...$response),
+                    default => assert(false, "Missing " . $response['_type'])
+                };
+                return $returnValue;
+            });
+        try {
         } catch (\Throwable $th) {
             $request->setError($th);
             if ($this->enableExceptions) {
@@ -47,10 +66,11 @@ class Client
             }
             return $request;
         }
+        return $data;
         $request->setResponse($response);
         return $request;
     }
-    
+
     public function factory(string $request, ...$args)
     {
         $request = "BingNewsSearch\Requests\\".ucfirst($request);
@@ -69,7 +89,7 @@ class Client
         $this->verifySsl = !$data;
         return $this;
     }
-    
+
     public function getUrl(string $path = null): string
     {
         $this->endpoint = preg_replace('/\/$/', '', $this->endpoint);

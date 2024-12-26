@@ -7,68 +7,94 @@ use DateTime;
 
 class News
 {
-    private string $name;
-    private string $description;
-    private string $url;
-    private ?Image $image;
-    private ?array $abouts;
-    private array $providers;
-    private ?DateTime $datePublished;
-    private ?Enum\IMarketCategory $category;
 
-    public function __construct(array $data)
+    public function __construct(
+        private string               $name,
+        private null|DateTime|string $datePublished,
+        private string               $description,
+        private string               $url,
+
+        private array                $about = [],
+        private array                $provider = [],
+        private array                $video = [],
+        private array                $mentions = [],
+        private null|Image|array     $image = null,
+        private ?string              $category = null,
+
+    )
     {
-        $this->name = $data['name'] ?? '';
-        $this->description = $data['description'] ?? '';
-        $this->url = $data['url'] ?? '';
-        $this->image = isset($data['image']) ? new Image($data['image']) : null;
-        if (isset($data['about'])) foreach ($data['about'] as $_about) {
-            $this->abouts[] = new AboutNews($_about);
+        if (is_string($this->datePublished)) {
+            $this->datePublished = new DateTime($this->datePublished);
         }
-        if (isset($data['provider'])) foreach ($data['provider'] as $_provider) {
-            $this->providers[] = new Provider($_provider);
+        if (is_array($this->image)) {
+            $this->image = new Image(...$this->image);
         }
-        $this->category = isset ($data['category']) ? new Enum\Category($data['category']) : null;
-        $this->datePublished = isset($data['datePublished']) ? new DateTime(date('Y-m-d h:i:s', strtotime($data['datePublished']))) : null;
     }
 
-    public function name(): string
+    public function getMentions(): array
+    {
+        return $this->mentions;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function description(): string
+    /**
+     * @return mixed
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVideo()
+    {
+        return $this->video;
+    }
+
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function url(): string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function image(): ?Image
+    public function getImage(): array|Image|null
     {
         return $this->image;
     }
 
-    public function abouts(): ?array
-    {
-        return $this->abouts;
-    }
-
-    public function providers(): array
-    {
-        return $this->providers;
-    }
-
-    public function datePublished(): DateTime
+    public function getDatePublished(): DateTime|string
     {
         return $this->datePublished;
     }
 
-    public function category(): ?Enum\IMarketCategory
+    public function getCategory(): ?string
     {
         return $this->category;
     }
+
+    public function getId(): string
+    {
+        return hash('xxh3', $this->getUrl());
+
+    }
+
+
 }

@@ -9,6 +9,13 @@ ___
 ```
 composer require bing-news-search/bing-news-search
 ```
+
+composer config repositories.bing_news '{"type": "vcs", "url": "git@github.com:tacman/BingNewsSearch.git"}'
+composer require bing-news-search/bing-news-search:dev-refactor
+
+composer config repositories.bing_news '{"type": "path", "url": "~/g/tacman/BingNewsSearch"}'
+composer require bing-news-search/bing-news-search:*@dev
+
 ___
 
 ## Usage of Api bing NEWS microsoft an easy way ##
