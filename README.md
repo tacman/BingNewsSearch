@@ -1,13 +1,18 @@
 # BingNewsSearch API Library #
+
+Fork of https://github.com/gabriel-yuji-inoue/BingNewsSearch
+
+This fork drops support for PHP 7 and refactors how structures are populated.  It is used by the survos/bing-news-bundle.
+
 ### See more of this API at: https://docs.microsoft.com/en-us/bing/search-apis/bing-news-search ###
 ___
 ## Dependencies ##
- - PHP7.4 >
+ - PHP 8.3+
  - GuzzleHttp 7.0.x >
 ___
 ## Instalation ##
 ```
-composer require bing-news-search/bing-news-search
+composer require tacman/bing-news-search
 ```
 
 composer config repositories.bing_news '{"type": "vcs", "url": "git@github.com:tacman/BingNewsSearch.git"}'

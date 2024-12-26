@@ -1,5 +1,5 @@
 {
-    "name": "bing-news-search/bing-news-search",
+    "name": "tacman/bing-news-search",
     "description": "PHP Library for bing news search API.",
     "license": "MIT",
     "authors": [
@@ -7,6 +7,11 @@
             "name": "Gabriel Yuji",
             "email": "gabriel.yuji.dev@hotmail.com",
             "homepage": "https://github.com/yujiisnotavailable"
+        },
+        {
+            "name": "Tac Tacelosky",
+            "email": "tacman@gmail.com",
+            "homepage": "https://github.com/tacman"
         }
     ],
     "require": {
