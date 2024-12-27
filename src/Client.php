@@ -90,7 +90,7 @@ class Client
         return $this;
     }
 
-    public function getUrl(string $path = null): string
+    public function getUrl(?string $path = null): string
     {
         $this->endpoint = preg_replace('/\/$/', '', $this->endpoint);
         if ($path) $path = preg_replace('/^\//', '', $path);
