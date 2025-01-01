@@ -4,8 +4,8 @@ namespace BingNewsSearch\Structs;
 
 class AboutNews
 {
-    private string $name;
-    private string $readLink;
+    private readonly string $name;
+    private readonly string $readLink;
 
     public function __construct(array $data)
     {

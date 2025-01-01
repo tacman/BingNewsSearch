@@ -7,16 +7,16 @@ use PHPUnit\Framework\TestCase;
 use BingNewsSearch\Client;
 class SearchTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $client = new Client('', '');
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Search',
+            \BingNewsSearch\Requests\Search::class,
             $client->search()
         );
         
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Search\Get',
+            \BingNewsSearch\Requests\Search\Get::class,
             $client->search()->get('something cool')
         );
 

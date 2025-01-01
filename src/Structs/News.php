@@ -9,17 +9,17 @@ class News
 {
 
     public function __construct(
-        private string               $name,
+        private readonly string               $name,
         private null|DateTime|string $datePublished,
-        private string               $description,
-        private string               $url,
+        private readonly string               $description,
+        private readonly string               $url,
 
-        private array                $about = [],
-        private array                $provider = [],
-        private array                $video = [],
-        private array                $mentions = [],
+        private readonly array                $about = [],
+        private readonly array                $provider = [],
+        private readonly array                $video = [],
+        private readonly array                $mentions = [],
         private null|Image|array     $image = null,
-        private ?string              $category = null,
+        private readonly ?string              $category = null,
 
     )
     {

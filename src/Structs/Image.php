@@ -7,8 +7,8 @@ class Image
 
     public function __construct(
         private ImageThumbnail|array|null $thumbnail = null,
-        private ?string         $url = null,
-        private array           $providers = [],
+        private readonly ?string         $url = null,
+        private readonly array           $providers = [],
 
     )
     {

@@ -25,31 +25,12 @@ class SubCategory extends Enum implements IMarketCategory
 
     public function parent(): Category
     {
-        switch ($this->value) {
-            case self::ENTERTAINMENT_MOVIEANDTV:
-            case self::ENTERTAINMENT_MUSIC:
-                return Category::ENTERTAINMENT();
-            case self::TECHNOLOGY: 
-            case self::SCIENCE: 
-                return Category::SCIENCEANDTECHNOLOGY();
-            case self::SPORTS_GOLF:
-            case self::SPORTS_MLB:
-            case self::SPORTS_NBA:
-            case self::SPORTS_NFL:
-            case self::SPORTS_NHL:
-            case self::SPORTS_SOCCER:
-            case self::SPORTS_TENNIS:
-            case self::SPORTS_CFB:
-            case self::SPORTS_CBB:
-                return Category::SPORTS();
-            case self::US_NORTHEAST:
-            case self::US_SOUTH:
-            case self::US_MIDWEST:
-            case self::US_WEST:
-                return Category::US();
-            default:
-                throw new InvalidArgumentException("Invalid subcategory market. Check BingNewsSearch\Enum\SubCategory constants options.");
-                
-        }
+        return match ($this->value) {
+            self::ENTERTAINMENT_MOVIEANDTV, self::ENTERTAINMENT_MUSIC => Category::ENTERTAINMENT(),
+            self::TECHNOLOGY, self::SCIENCE => Category::SCIENCEANDTECHNOLOGY(),
+            self::SPORTS_GOLF, self::SPORTS_MLB, self::SPORTS_NBA, self::SPORTS_NFL, self::SPORTS_NHL, self::SPORTS_SOCCER, self::SPORTS_TENNIS, self::SPORTS_CFB, self::SPORTS_CBB => Category::SPORTS(),
+            self::US_NORTHEAST, self::US_SOUTH, self::US_MIDWEST, self::US_WEST => Category::US(),
+            default => throw new InvalidArgumentException("Invalid subcategory market. Check BingNewsSearch\Enum\SubCategory constants options."),
+        };
     }
 }

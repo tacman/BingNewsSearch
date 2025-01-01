@@ -9,7 +9,6 @@ use GuzzleHttp\Psr7;
 
 abstract class Request implements \JsonSerializable
 {
-    private Client $_client;
     protected Psr7\Response $response;
     protected ?bool $status = null;
     protected ?string $message = null;
@@ -23,9 +22,8 @@ abstract class Request implements \JsonSerializable
     abstract public function toArray(): array;
     abstract public function onBeforeRequest(): ?\Exception;
 
-    public function __construct(Client $client, ...$args)
+    public function __construct(private readonly Client $_client, ...$args)
     {
-        $this->_client = $client;
         if (method_exists($this, "initialize")) call_user_func_array([$this, "initialize"], $args);
     }
 

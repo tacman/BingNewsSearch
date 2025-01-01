@@ -15,7 +15,7 @@ namespace BingNewsSearch\Enum;
  * @author Daniel Costa <danielcosta@gmail.com>
  * @author Mirosław Filip <mirfilip@gmail.com>
  */
-abstract class Enum implements \JsonSerializable
+abstract class Enum implements \JsonSerializable, \Stringable
 {
     /**
      * Enum value
@@ -46,8 +46,8 @@ abstract class Enum implements \JsonSerializable
             return;
         }
 
-        if (!$this->isValid($value)) {
-            throw new \UnexpectedValueException("Value '$value' is not part of the enum " . \get_called_class());
+        if (!static::isValid($value)) {
+            throw new \UnexpectedValueException("Value '$value' is not part of the enum " . static::class);
         }
 
         $this->value = $value;
@@ -74,7 +74,7 @@ abstract class Enum implements \JsonSerializable
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->value;
     }
@@ -86,9 +86,9 @@ abstract class Enum implements \JsonSerializable
      *
      * @return bool True if Enums are equal, false if not equal
      */
-    final public function equals(Enum $enum = null)
+    final public function equals(?Enum $enum = null)
     {
-        return $enum !== null && $this->getValue() === $enum->getValue() && \get_called_class() === \get_class($enum);
+        return $enum && $this->getValue() === $enum->getValue() && static::class === $enum::class;
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class Enum implements \JsonSerializable
      *
      * @return array
      */
-    public static function keys()
+    public static function keys(): array
     {
         return \array_keys(static::toArray());
     }
@@ -106,9 +106,9 @@ abstract class Enum implements \JsonSerializable
      *
      * @return static[] Constant name in key, Enum instance in value
      */
-    public static function values()
+    public static function values(): array
     {
-        $values = array();
+        $values = [];
 
         foreach (static::toArray() as $key => $value) {
             $values[$key] = new static($value);
@@ -124,7 +124,7 @@ abstract class Enum implements \JsonSerializable
      */
     public static function toArray()
     {
-        $class = \get_called_class();
+        $class = static::class;
         if (!isset(static::$cache[$class])) {
             $reflection            = new \ReflectionClass($class);
             static::$cache[$class] = $reflection->getConstants();
@@ -187,7 +187,7 @@ abstract class Enum implements \JsonSerializable
             return new static($array[$name]);
         }
 
-        throw new \BadMethodCallException("No static method or enum constant '$name' in class " . \get_called_class());
+        throw new \BadMethodCallException("No static method or enum constant '$name' in class " . static::class);
     }
 
     /**
@@ -197,7 +197,7 @@ abstract class Enum implements \JsonSerializable
      * @return mixed
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getValue();
     }

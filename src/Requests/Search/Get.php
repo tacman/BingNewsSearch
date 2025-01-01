@@ -63,6 +63,7 @@ class Get extends Requests\Request
         return Enum\RequestMethod::GET();
     }
 
+    #[\Override]
     public function getQuery(): array
     {
         return [
@@ -92,7 +93,7 @@ class Get extends Requests\Request
     public function setResponseData(array $data): self
     {
         foreach ($data as $_news) {
-            $this->news[] = new Structs\News($_news);
+            $this->news[] = new Structs\News(...$_news);
         }
         return $this;
     }

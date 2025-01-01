@@ -17,9 +17,9 @@ class Client
 
     public function __construct(
         private string $endpoint,
-        private string $token,
-        private string $version = 'v7.0',
-       private ?CacheInterface $cache = null)
+        private readonly string $token,
+        private readonly string $version = 'v7.0',
+       private readonly ?CacheInterface $cache = null)
     {
     }
 

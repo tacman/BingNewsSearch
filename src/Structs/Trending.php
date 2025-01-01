@@ -7,12 +7,13 @@ use DateTime;
 
 class Trending
 {
-    private string $name;
-    private ?Image $image;
-    private string $webSearchUrl;
-    private bool $isBreakingNews;
+    private readonly string $name;
+    private readonly ?Image $image;
+    private readonly string $webSearchUrl;
+    private readonly bool $isBreakingNews;
     private ?array $query;
-    private string $newsSearchUrl;
+//    private readonly string $newsSearchUrl;
+    private readonly string $description;
 
     public function __construct(array $data)
     {
@@ -24,6 +25,7 @@ class Trending
             $this->query[] = $_query;
         }
         $this->isBreakingNews = $data['isBreakingNews'] ?? false;
+//        $this->newsSearchUrl = $data['newsSearchUrl'] ?? false;
     }
 
     public function name(): string
@@ -51,10 +53,10 @@ class Trending
         return $this->isBreakingNews;
     }
 
-    public function newsSearchUrl(): string
-    {
-        return $this->newsSearchUrl;
-    }
+//    public function newsSearchUrl(): string
+//    {
+//        return $this->newsSearchUrl;
+//    }
 
     public function toArray(): array
     {
@@ -64,7 +66,7 @@ class Trending
             'webSearchUrl' => $this->webSearchUrl,
             'isBreakingNews' => $this->isBreakingNews,
             'query' => $this->query,
-            'newsSearchUrl' => $this->newsSearchUrl,
+//            'newsSearchUrl' => $this->newsSearchUrl,
         ];
     }
 }

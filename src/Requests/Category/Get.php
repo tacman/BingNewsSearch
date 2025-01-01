@@ -8,16 +8,16 @@ use BingNewsSearch\Enum;
 use DateTime;
 use DomainException;
 
-class Get extends Requests\Request
+class   Get extends Requests\Request
 {
     private Enum\IMarketCategory $category;
-    private ?Enum\Language $language;
+    private ?Enum\Language $language = null;
     private Enum\SafeSearch $safeSearch;
     private Enum\SortBy $sortBy;
     private ?DateTime $since = null;
     private array $news = [];
 
-    public function initialize(Enum\IMarketCategory $category, Enum\Language $language = null)
+    public function initialize(Enum\IMarketCategory $category, ?Enum\Language $language = null)
     {
         $this->category = $category;
         $this->language = $language;
@@ -54,6 +54,7 @@ class Get extends Requests\Request
         return Enum\RequestMethod::GET();
     }
 
+    #[\Override]
     public function getQuery(): array
     {
         return [
@@ -84,7 +85,7 @@ class Get extends Requests\Request
     public function setResponseData(array $data): self
     {
         foreach ($data as $_news) {
-            $this->news[] = new Structs\News($_news);
+            $this->news[] = new Structs\News(...$_news);
         }
         return $this;
     }

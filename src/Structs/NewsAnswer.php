@@ -9,10 +9,10 @@ class NewsAnswer
 {
 
     public function __construct(
-        private ?string $_type=null,
-        private ?string $readLink=null,
-        private array $queryContext=[],
-        private ?int $totalEstimatedMatches=null,
+        private readonly ?string $_type=null,
+        private readonly ?string $readLink=null,
+        private readonly array $queryContext=[],
+        private readonly ?int $totalEstimatedMatches=null,
         private $sort=null,
         /** @var News[] */
         private array $value=[]

@@ -10,13 +10,13 @@ use DateTime;
 
 class Get extends Requests\Request
 {
-    private ?Enum\Language $language;
+    private ?Enum\Language $language = null;
     private Enum\SafeSearch $safeSearch;
     private Enum\SortBy $sortBy;
     private ?DateTime $since = null;
     private array $trending = [];
 
-    public function initialize(Enum\Language $language = null)
+    public function initialize(?Enum\Language $language = null)
     {
         $this->language = $language;
         $this->safeSearch = Enum\SafeSearch::MODERATE();
@@ -54,6 +54,7 @@ class Get extends Requests\Request
         return $this;
     }
 
+    #[\Override]
     public function getQuery(): array
     {
         return [

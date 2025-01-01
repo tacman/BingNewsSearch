@@ -4,9 +4,9 @@ namespace BingNewsSearch\Structs;
 
 class Provider
 {
-    private string $_type;
-    private string $name;
-    private ?Image $image;
+    private readonly string $_type;
+    private readonly string $name;
+    private readonly ?Image $image;
 
     public function __construct(array $data)
     {

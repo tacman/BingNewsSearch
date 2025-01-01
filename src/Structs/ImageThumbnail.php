@@ -6,9 +6,9 @@ class ImageThumbnail
 {
 
     public function __construct(
-        private string $contentUrl,
-        private ?int   $width,
-        private ?int   $height,
+        private readonly string $contentUrl,
+        private readonly ?int   $width,
+        private readonly ?int   $height,
 
     )
     {

@@ -8,16 +8,16 @@ use BingNewsSearch\Client;
 use BingNewsSearch\Enum;
 class CategoryTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $client = new Client('', '');
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Category',
+            \BingNewsSearch\Requests\Category::class,
             $client->category()
         );
         
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Category\Get',
+            \BingNewsSearch\Requests\Category\Get::class,
             $client->category()->get(Enum\Category::EDUCATION())
         );
 

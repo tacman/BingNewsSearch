@@ -8,16 +8,16 @@ use BingNewsSearch\Client;
 use BingNewsSearch\Enum;
 class TrendingTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $client = new Client('', '');
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Trending',
+            \BingNewsSearch\Requests\Trending::class,
             $client->trending()
         );
         
         $this->assertInstanceOf(
-            '\BingNewsSearch\Requests\Trending\Get',
+            \BingNewsSearch\Requests\Trending\Get::class,
             $client->trending()->get(Enum\Language::PT_BR())
         );
 
