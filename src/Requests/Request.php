@@ -27,7 +27,7 @@ abstract class Request implements \JsonSerializable
         if (method_exists($this, "initialize")) call_user_func_array([$this, "initialize"], $args);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }
