@@ -51,7 +51,7 @@ class   Get extends Requests\Request
 
     public function getMethod(): Enum\RequestMethod
     {
-        return Enum\RequestMethod::GET();
+        return Enum\RequestMethod::GET;
     }
 
     #[\Override]

@@ -19,8 +19,8 @@ class Get extends Requests\Request
     public function initialize(?Enum\Language $language = null)
     {
         $this->language = $language;
-        $this->safeSearch = Enum\SafeSearch::MODERATE();
-        $this->sortBy = Enum\SortBy::DATE();
+        $this->safeSearch = Enum\SafeSearch::MODERATE;
+        $this->sortBy = Enum\SortBy::DATE;
     }
 
     public function onBeforeRequest(): ?Exceptions\Exception
@@ -33,7 +33,7 @@ class Get extends Requests\Request
 
     public function getMethod(): Enum\RequestMethod
     {
-        return Enum\RequestMethod::GET();
+        return Enum\RequestMethod::GET;
     }
 
     public function setSafeSearch(Enum\SafeSearch $data): self

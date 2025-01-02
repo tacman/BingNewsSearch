@@ -12,6 +12,7 @@ abstract class Request implements \JsonSerializable
     protected Psr7\Response $response;
     protected ?bool $status = null;
     protected ?string $message = null;
+    protected ?string $statusCode = null;
     protected ?\Exception $error = null;
     protected array $formData = [];
     protected array $query = [];
@@ -38,21 +39,21 @@ abstract class Request implements \JsonSerializable
         return $this;
     }
 
-    public function setResponse(Psr7\Response $requestResponse): self
-    {
-        $this->requestResponse = $requestResponse;
-        $response = json_decode($requestResponse->getBody()->getContents(), true);
-
-        dd($response);
-        $newsAnswer = new NewsAnswer(...$data);
-
-        dd($response);
-        $this->status = ($requestResponse->getStatusCode() === 200);
-        $this->webUrl = $response['webSearchUrl'] ?? '';
-        $this->message = $requestResponse->getReasonPhrase() ?? '';
-        if (isset($response["value"])) $this->setResponseData($response["value"]);
-        return $this;
-    }
+//    public function setResponse(Psr7\Response $requestResponse): self
+//    {
+//        $this->requestResponse = $requestResponse;
+//        $response = json_decode($requestResponse->getBody()->getContents(), true);
+//
+//        dd($response);
+//        $newsAnswer = new NewsAnswer(...$data);
+//
+//        dd($response);
+//        $this->status = ($requestResponse->getStatusCode() === 200);
+//        $this->webUrl = $response['webSearchUrl'] ?? '';
+//        $this->message = $requestResponse->getReasonPhrase() ?? '';
+//        if (isset($response["value"])) $this->setResponseData($response["value"]);
+//        return $this;
+//    }
 
     public function getResponse(): Psr7\Response
     {

@@ -1,9 +1,10 @@
 <?php
+
 namespace BingNewsSearch\Enum;
 
 use InvalidArgumentException;
 
-enum SubCategory:string # implements IMarketCategory
+enum SubCategory: string # implements IMarketCategory
 {
     case ENTERTAINMENT_MOVIEANDTV = 'Entertainment_MovieAndTV';
     case ENTERTAINMENT_MUSIC = 'Entertainment_Music';
@@ -28,7 +29,7 @@ enum SubCategory:string # implements IMarketCategory
         return match ($this->value) {
             self::ENTERTAINMENT_MOVIEANDTV, self::ENTERTAINMENT_MUSIC => Category::ENTERTAINMENT,
             self::TECHNOLOGY, self::SCIENCE => Category::SCIENCEANDTECHNOLOGY,
-            self::SPORTS_GOLF, self::SPORTS_MLB, self::SPORTS_NBA, self::SPORTS_NFL, self::SPORTS_NHL, self::SPORTS_SOCCER, self::SPORTS_TENNIS, self::SPORTS_CFB, self::SPORTS_CBB => Category::SPORTS(),
+            self::SPORTS_GOLF, self::SPORTS_MLB, self::SPORTS_NBA, self::SPORTS_NFL, self::SPORTS_NHL, self::SPORTS_SOCCER, self::SPORTS_TENNIS, self::SPORTS_CFB, self::SPORTS_CBB => Category::SPORTS,
             self::US_NORTHEAST, self::US_SOUTH, self::US_MIDWEST, self::US_WEST => Category::US,
             default => throw new InvalidArgumentException("Invalid subcategory market. 
                 Check BingNewsSearch\Enum\SubCategory constants options."),

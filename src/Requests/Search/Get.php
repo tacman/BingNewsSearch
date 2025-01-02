@@ -23,8 +23,8 @@ class Get extends Requests\Request
     {
         $this->q = $query;
         $this->language = $language;
-        $this->safeSearch = Enum\SafeSearch::OFF();
-        $this->sortBy = Enum\SortBy::DATE();
+        $this->safeSearch = Enum\SafeSearch::OFF;
+        $this->sortBy = Enum\SortBy::DATE;
     }
 
     public function onBeforeRequest(): ?\Exception
@@ -60,7 +60,7 @@ class Get extends Requests\Request
 
     public function getMethod(): Enum\RequestMethod
     {
-        return Enum\RequestMethod::GET();
+        return Enum\RequestMethod::GET;
     }
 
     #[\Override]

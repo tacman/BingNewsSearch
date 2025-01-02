@@ -20,11 +20,12 @@ class NewsAnswer
     {
         $news = [];
         foreach ($this->value as $newsData) {
-            try {
                 $news[] = new News(...$newsData);
-            } catch (\Exception $e) {
-                dd($newsData, $e->getMessage());
-            }
+//            try {
+//            } catch (\Exception $e) {
+//
+//                dd($newsData, $e->getMessage());
+//            }
         }
         $this->value = $news;
     }
