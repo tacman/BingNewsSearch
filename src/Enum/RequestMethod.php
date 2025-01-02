@@ -2,7 +2,7 @@
 
 namespace BingNewsSearch\Enum;
 
-class RequestMethod extends Enum
+enum RequestMethod:string
 {
     protected const GET = "GET";
 }

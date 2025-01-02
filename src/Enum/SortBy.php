@@ -1,10 +1,10 @@
 <?php
 namespace BingNewsSearch\Enum;
 
-class SortBy extends Enum
+enum SortBy:string
 {
-    public const DATE  = 'Date';
-    public const RELEVANCE = 'Relevance';
+    case DATE  = 'Date';
+    case RELEVANCE = 'Relevance';
 
     public function isDate(): bool
     {

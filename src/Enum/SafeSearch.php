@@ -1,9 +1,9 @@
 <?php
 namespace BingNewsSearch\Enum;
 
-class SafeSearch extends Enum
+enum SafeSearch:string
 {
-    public const OFF = 'Off';
-    public const MODERATE = 'Moderate';
-    public const STRICT = 'Strict';
+    case OFF = 'Off';
+    case MODERATE = 'Moderate';
+    case STRICT = 'Strict';
 }

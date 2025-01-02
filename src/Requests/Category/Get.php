@@ -21,8 +21,8 @@ class   Get extends Requests\Request
     {
         $this->category = $category;
         $this->language = $language;
-        $this->safeSearch = Enum\SafeSearch::MODERATE();
-        $this->sortBy = Enum\SortBy::DATE();
+        $this->safeSearch = Enum\SafeSearch::MODERATE;
+        $this->sortBy = Enum\SortBy::DATE;
     }
 
     public function onBeforeRequest(): ?\Exception
