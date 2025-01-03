@@ -27,7 +27,36 @@ class Client
     {
     }
 
-    public function request(Requests\Request $request): NewsAnswer
+    public function request(Requests\Request $request): Requests\Request
+    {
+        if (empty($this->_client)) $this->_client = new GuzzleClient(['verify' => $this->verifySsl]);
+
+            $exception = $request->onBeforeRequest();
+            if ($exception) {
+                $request->setError($exception);
+                if ($this->enableExceptions) throw $exception;
+            }
+            $response = $this->_client->request((string)$request->getMethod()->value, $this->getUrl($request->getPath()), [
+                RequestOptions::QUERY => $request->getQuery(),
+                RequestOptions::FORM_PARAMS => $request->getFormData(),
+                RequestOptions::HEADERS => [ 'Ocp-Apim-Subscription-Key' => $this->token ],
+            ]);
+        try {
+        } catch (\Throwable $th) {
+            $request->setError($th);
+            if ($this->enableExceptions) {
+                if (preg_match('/Could not resolve host:/', $th->getMessage())) {
+                    throw new Exceptions\ConnectionException("Could not resolve endpoint. Check your network connection.");
+                }
+                throw new Exceptions\Exception($th->getMessage());
+            }
+            return $request;
+        }
+        $request = $request->setResponse($response);
+        return $request;
+    }
+
+    public function xxrequest(Requests\Request $request): NewsAnswer
     {
         if (empty($this->_client)) {
             $this->_client = new GuzzleClient(['verify' => $this->verifySsl]);
@@ -53,11 +82,16 @@ class Client
                 }
                 $content = $response->getBody()->getContents();
                 $response = json_decode($content, true);
+                dd($response);
                 $returnValue =  match($response['_type']) {
                     'News' => new NewsAnswer(...$response),
                     default => assert(false, "Missing " . $response['_type'])
                 };
+
+//                dd($returnValue, $response, $apiUrl);
                 $data = $returnValue;
+//                dd($data);
+                return $data;
 //                return $returnValue;
 //            });
 
@@ -73,7 +107,7 @@ class Client
             }
             return $request;
         }
-        return $data;
+//        return $data;
         $request->setResponse($response);
         return $request;
     }

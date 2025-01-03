@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7;
 abstract class Request implements \JsonSerializable
 {
     protected Psr7\Response $response;
+    protected Psr7\Response $requestResponse;
     protected ?bool $status = null;
     protected ?string $message = null;
     protected ?string $statusCode = null;
@@ -17,6 +18,7 @@ abstract class Request implements \JsonSerializable
     protected array $formData = [];
     protected array $query = [];
     protected string $webUrl = '';
+    protected ?array $data= null; // the json response
 
     abstract public function getMethod(): Enum\RequestMethod;
     abstract public function getPath(): string;
@@ -39,25 +41,42 @@ abstract class Request implements \JsonSerializable
         return $this;
     }
 
-//    public function setResponse(Psr7\Response $requestResponse): self
-//    {
-//        $this->requestResponse = $requestResponse;
-//        $response = json_decode($requestResponse->getBody()->getContents(), true);
-//
+
+    public function setResponse(Psr7\Response $requestResponse): self
+    {
+        $this->requestResponse = $requestResponse;
+        $jsonData = json_decode($requestResponse->getBody()->getContents(), true);
+        $this->data = $jsonData;
+        $this->status = ($requestResponse->getStatusCode() === 200);
+        $this->webUrl = $jsonData['webSearchUrl'] ?? '';
+        $this->message = $requestResponse->getReasonPhrase() ?? '';
+        if (isset($jsonData["value"])) $this->setResponseData($jsonData["value"]);
+        return $this;
+    }
+
+    public function getResponseData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function setResponsexx(Psr7\Response $requestResponse): self
+    {
+        $this->requestResponse = $requestResponse;
+        $response = json_decode($requestResponse->getBody()->getContents(), true);
+
+//        $newsAnswer = new NewsAnswer(...$response);
+//        dd($response, $newsAnswer);
 //        dd($response);
-//        $newsAnswer = new NewsAnswer(...$data);
-//
-//        dd($response);
-//        $this->status = ($requestResponse->getStatusCode() === 200);
-//        $this->webUrl = $response['webSearchUrl'] ?? '';
-//        $this->message = $requestResponse->getReasonPhrase() ?? '';
-//        if (isset($response["value"])) $this->setResponseData($response["value"]);
-//        return $this;
-//    }
+        $this->status = ($requestResponse->getStatusCode() === 200);
+        $this->webUrl = $response['webSearchUrl'] ?? '';
+        $this->message = $requestResponse->getReasonPhrase() ?? '';
+        if (isset($response["value"])) $this->setResponseData($response["value"]);
+        return $this;
+    }
 
     public function getResponse(): Psr7\Response
     {
-        return $this->response;
+        return $this->requestResponse;
     }
 
     public function getStatus(): bool
@@ -80,7 +99,7 @@ abstract class Request implements \JsonSerializable
         return $this->formData;
     }
 
-    public function request()
+    public function request(): Request
     {
         $this->_client->request($this);
         return $this;

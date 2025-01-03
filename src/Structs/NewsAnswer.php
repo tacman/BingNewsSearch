@@ -11,11 +11,18 @@ class NewsAnswer
     public function __construct(
         private readonly ?string $_type=null,
         private readonly ?string $readLink=null,
+        private readonly ?string $language=null,
+        private readonly ?string $query=null,
+        private readonly ?Enum\SafeSearch $safeSearch=null,
+        private readonly null|DateTime|string $since=null,
+        private readonly ?Enum\SortBy  $sortBy=null,
         private readonly array $queryContext=[],
+        private readonly ?int $quantity=null,
         private readonly ?int $totalEstimatedMatches=null,
         private readonly ?string $webSearchUrl=null,
         private $sort=null,
         /** @var News[] */
+        private array $news=[],
         private array $value=[]
     )
     {
@@ -41,6 +48,12 @@ class NewsAnswer
     {
         return $this->readLink;
     }
+
+    public function getWebSearchUrl(): ?string
+    {
+        return $this->webSearchUrl;
+    }
+
 
     public function getQueryContext(): array
     {
