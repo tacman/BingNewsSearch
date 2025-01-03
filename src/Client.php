@@ -57,7 +57,6 @@ class Client
                     'News' => new NewsAnswer(...$response),
                     default => assert(false, "Missing " . $response['_type'])
                 };
-                dump($returnValue, $response, $apiUrl);
                 $data = $returnValue;
 //                return $returnValue;
 //            });
