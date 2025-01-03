@@ -7,7 +7,9 @@ use GuzzleHttp\RequestOptions;
 use BingNewsSearch\Exceptions;
 use BingNewsSearch\Requests;
 use Symfony\Component\Cache\CacheItem;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client
 {
@@ -15,17 +17,21 @@ class Client
     private bool $verifySsl = true;
     private bool $enableExceptions = false;
 
+
     public function __construct(
-        private string $endpoint,
         private readonly string $token,
+        private HttpClientInterface $httpClient,
+        private string $endpoint='https://api.bing.microsoft.com/',
         private readonly string $version = 'v7.0',
-       private readonly ?CacheInterface $cache = null)
+    )
     {
     }
 
     public function request(Requests\Request $request): NewsAnswer
     {
-        if (empty($this->_client)) $this->_client = new GuzzleClient(['verify' => $this->verifySsl]);
+        if (empty($this->_client)) {
+            $this->_client = new GuzzleClient(['verify' => $this->verifySsl]);
+        }
 
             $exception = $request->onBeforeRequest();
             if ($exception) {
@@ -33,11 +39,9 @@ class Client
                 if ($this->enableExceptions) throw $exception;
             }
 
-            $key = hash('xxh3', 'xxx' . json_encode($request->toArray()));
-//            dd($request->toArray(), $request->getQuery());
-            $data = $this->cache->get($key, function (CacheItem $item) use ($request) {
-                $item->expiresAfter(3600);
-                $response = $this->_client->request((string)$request->getMethod(), $this->getUrl($request->getPath()), [
+
+
+                $response = $this->_client->request('GET', $apiUrl = $this->getUrl($request->getPath()), [
                     RequestOptions::QUERY => $request->getQuery(),
                     RequestOptions::FORM_PARAMS => $request->getFormData(),
                     RequestOptions::HEADERS => [ 'Ocp-Apim-Subscription-Key' => $this->token ],
@@ -53,9 +57,13 @@ class Client
                     'News' => new NewsAnswer(...$response),
                     default => assert(false, "Missing " . $response['_type'])
                 };
-                return $returnValue;
-            });
+                dump($returnValue, $response, $apiUrl);
+                $data = $returnValue;
+//                return $returnValue;
+//            });
+
         try {
+
         } catch (\Throwable $th) {
             $request->setError($th);
             if ($this->enableExceptions) {

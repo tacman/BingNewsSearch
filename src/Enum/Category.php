@@ -1,7 +1,7 @@
 <?php
 namespace BingNewsSearch\Enum;
 
-enum Category:string # implements IMarketCategory
+enum Category:string implements IMarketCategory
 {
     case AUSTRALIA = 'Australia';
     case CANADA = 'Canada';

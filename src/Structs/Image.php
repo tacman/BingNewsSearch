@@ -9,9 +9,13 @@ class Image
         private ImageThumbnail|array|null $thumbnail = null,
         private readonly ?string         $url = null,
         private readonly array           $providers = [],
+        private readonly   ?bool $isLicensed = null,
 
     )
     {
+        if ($this->isLicensed === false) {
+//            dd($this->thumbnail, get_defined_vars());
+        }
         if (is_array($thumbnail)) {
             $this->thumbnail = new ImageThumbnail(...$thumbnail);
         }

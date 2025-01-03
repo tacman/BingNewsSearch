@@ -13,6 +13,7 @@ class NewsAnswer
         private readonly ?string $readLink=null,
         private readonly array $queryContext=[],
         private readonly ?int $totalEstimatedMatches=null,
+        private readonly ?string $webSearchUrl=null,
         private $sort=null,
         /** @var News[] */
         private array $value=[]

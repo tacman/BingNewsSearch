@@ -58,10 +58,10 @@ class   Get extends Requests\Request
     public function getQuery(): array
     {
         return [
-            'category' => (string)$this->category,
-            'mkt' => (string)$this->language,
-            'safeSearch' => (string)$this->safeSearch,
-            'sortBy' => (string)$this->sortBy,
+            'category' => $this->category->value,
+            'mkt' => $this->language->value,
+            'safeSearch' => $this->safeSearch->value,
+            'sortBy' => $this->sortBy->value,
         ];
     }
 
