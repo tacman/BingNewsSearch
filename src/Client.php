@@ -20,7 +20,6 @@ class Client
 
     public function __construct(
         private readonly string $token,
-        private HttpClientInterface $httpClient,
         private string $endpoint='https://api.bing.microsoft.com/',
         private readonly string $version = 'v7.0',
     )
