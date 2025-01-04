@@ -20,10 +20,16 @@ class Client
 
     public function __construct(
         private readonly string $token,
-        private string $endpoint='https://api.bing.microsoft.com/',
+        protected string $endpoint='https://api.bing.microsoft.com/',
         private readonly string $version = 'v7.0',
     )
     {
+    }
+
+    public function setEndpoint(string $endpoint): static
+    {
+        $this->endpoint = $endpoint;
+        return $this;
     }
 
     public function request(Requests\Request $request): Requests\Request
